@@ -1,0 +1,48 @@
+#Tratar dados 'tempo.csv' em R
+##Exercicio Seção 9 - 62 de Prática em R
+```{r}
+#Ler arquivo 'tempo.csv' (arquivo não se encontra na pasta pradrão por isso está escrito o diretório inteiro)
+
+dados = read.csv("C:\\Users\\david\\Google Drive\\Udemy\\Formação Cientista de Dados com Python e R\\9.Prática em R\\dados\\tempo.csv", sep= ";", na.strings="", stringsAsFactors=T) 
+
+summary (dados)
+dados
+#tratando aparencia fora do dominio
+unique (dados$Aparencia)
+summary (dados$Aparencia)
+dados[!dados$Aparencia %in% c("sol", "nublado", "chuva"), ]$Aparencia = "sol"
+dados$Aparencia = factor(dados$Aparencia)
+
+
+#tratando temperatura fora do dominio
+summary (dados$Temperatura)
+
+dados[(dados$Temperatura < -130 | dados$Temperatura > 130), ]$Temperatura = median (dados$Temperatura)
+dados
+
+#tratando umidade fora do dominio (e tratando NA)
+summary (dados$Umidade)
+dados[!complete.cases(dados$Umidade),]
+dados [is.na (dados$Umidade),]$Umidade = median(dados$Umidade, na.rm = T)
+dados[(dados$Umidade < 0 | dados$Umidade > 100),]$Umidade = median(dados$Umidade)
+
+#tratando Jogar fora do dominio (nada necessario para tratar)
+summary (dados$Jogar)
+dados[!complete.cases(dados$Jogar),]
+opcao = table (dados$Jogar)
+barplot(opcao, main="Posibilidade de jogar", xlab= "Jogar")
+
+#tratando NA de Vento
+summary (dados$Vento)
+dados[!complete.cases(dados$Vento),]
+dados [is.na (dados$Vento),]$Vento = "FALSO"
+  
+#Averiguando levels
+unique(dados$Aparencia)
+unique(dados$Vento)
+unique(dados$Jogar)
+
+#Averiguando NA
+dados[!complete.cases(dados),]
+```
+
